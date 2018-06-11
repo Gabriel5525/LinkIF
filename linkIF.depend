@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1528727834 source:c:\users\gabri\onedrive\Área de trabalho\linkif\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<windows.h>
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<iomanip>
+	<cstddef>
+	<time.h>
+	<algorithm>
+

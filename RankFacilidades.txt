@@ -1,0 +1,74 @@
+História : 72
+Biologia : 48
+Língua Portuguesa/Literatura : 42
+Dançar : 39
+Artes : 34
+Futebol : 33
+Inglês : 32
+Culinária : 29
+Eletrônica Digital I : 28
+Algoritmos e Lógicas de Programação I : 28
+Informática Básica : 28
+Vôlei : 25
+Matemática Financeira : 25
+Quimica : 24
+Noções de Direito : 22
+Geografia : 21
+Matemática : 21
+Confeitaria : 20
+Introdução à Administração : 20
+Sociologia/Filosofia : 18
+Desenho Técnico : 16
+Desenho : 15
+Cantar : 15
+Tocar Violão : 12
+HandBol : 12
+Corrida : 12
+Atletismo : 11
+Fundamentos de Informática : 11
+Rotinas Administrativas : 9
+Espanhol : 9
+Economia : 9
+Tocar Flauta : 7
+Eletrônica Básica : 7
+Eletrônica Analógica I : 7
+Física : 7
+Artes Marciais - Karatê : 7
+Basquete : 7
+Desenvolvimento web : 7
+Patins : 6
+Tocar Teclado/Piano : 6
+Skate : 6
+Microcontroladores : 6
+Artes Marciais - Jiu Jitsu : 5
+Artes Marciais  - Muay Thai : 5
+Arco e Flecha : 5
+Segurança do Trabalho : 4
+Redes de Computadores : 4
+Administração Mercadológica : 4
+Direito Aplicado à Administração : 4
+Eletrônica Digital II : 4
+Organização e Manutenção de computadores : 3
+Tocar Bateria : 3
+Eletrônica Analógica II : 3
+Operações Financeiras : 2
+Tênis de Mesa : 2
+Gestão de Pessoas : 2
+Musculação : 2
+Algoritmos e Lógicas de Programação II : 1
+Empreendedorismo : 1
+Ciclismo : 1
+Rotinas Contábeis : 1
+Fundamentos de Eletricidade Industrial : 1
+Ler partitura : 1
+Manutenção : 1
+SlakeLine : 1
+Tocar ukulele : 1
+Xadrez : 1
+Boomerang : 1
+Natação : 1
+Rotinas de produção e serviços : 1
+Tocar Violino : 1
+Projeto de Sistemas : 1
+Capoeira : 1
+Arte Maciais-Krav Magá : 1
