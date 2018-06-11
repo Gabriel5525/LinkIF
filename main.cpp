@@ -13,7 +13,6 @@
 
 using namespace std;
 
-
 struct aluno
 {
     int codigo;
@@ -25,14 +24,102 @@ struct aluno
     string dificuldade[10];
 };
 
+struct Celula
+{
+    aluno novo;
+    Celula *prox;
+};
+
+struct Lista
+{
+    Celula* primeiro;
+
+    bool vazia()
+    {
+        return (primeiro == NULL);
+    }
+
+    void inserirAoFinal(Celula* c)
+    {
+        if(vazia())
+        {
+            primeiro = c;
+        }
+        else
+        {
+            Celula* aux = primeiro;
+            while(aux->prox != NULL)
+            {
+                aux = aux->prox;
+            }
+            aux->prox = c;
+        }
+    }
+
+    void imprimir()
+    {
+        Celula* aux = primeiro;
+        while(aux != NULL)
+        {
+            cout<<aux->novo.nome<<endl;
+            aux = aux->prox;
+        }
+    }
+
+};
+
+
 struct disciplina
 {
     int codigo;
     string nome;
     int rankFacilidade=0;
+    Lista listaFac ;
     int rankDificuldade=0;
+    Lista listaDif ;
 
 };
+
+void insereListaDisciplina(disciplina lista[], aluno novo, int tam, int id)
+{
+
+    if(id==1)
+    {
+        for(int i=0; i<10; i++)
+        {
+            for(int j=0; j<tam; j++)
+            {
+                if(novo.facilidade[i]==lista[j].nome)
+                {
+                    Celula* c= new Celula();
+                    c->novo=novo;
+                    lista[j].listaFac.inserirAoFinal(c);
+
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(int i=0; i<10; i++)
+        {
+            for(int j=0; j<tam; j++)
+            {
+                if(novo.dificuldade[i]==lista[j].nome)
+                {
+                    Celula* c= new Celula();
+                    c->novo=novo;
+                    lista[j].listaDif.inserirAoFinal(c);
+
+                    break;
+                }
+            }
+        }
+    }
+
+}
+
 
 bool verifica(disciplina vetor[], string nome, int tam, int id)
 {
@@ -102,6 +189,7 @@ int leFacilidades(disciplina discip[],aluno vetor[], int tam)
             i++;
             aux++;
         }
+        insereListaDisciplina(discip,vetor[j],tam,1);
         j++;
     }
     reader.close();
@@ -145,7 +233,7 @@ int leDificuldades(disciplina discip[], aluno vetor[], int tam)
             i++;
             aux++;
         }
-
+        insereListaDisciplina(discip,vetor[j],tam,2);
         j++;
     }
 
@@ -379,7 +467,21 @@ int main()
     tam=leArquivo(vetorD,vetor);
     gravarRank(vetorD,tam);
 
-    imprimir(vetor,141);
+    for(int i=0;i<tam;i++){
+        cout<<endl;
+        cout<<vetorD[i].nome<<":"<<endl;
+        cout<<"\nFacilidade:"<<endl;
+        cout<<"___________________"<<endl;
+        vetorD[i].listaFac.imprimir();
+        cout<<"___________________"<<endl;
+        cout<<"\nDificuldade:"<<endl;
+        cout<<"___________________"<<endl;
+        vetorD[i].listaDif.imprimir();
+    }
+
+
+
+    //imprimir(vetor,141);
 
 
     return 0;
