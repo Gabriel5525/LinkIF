@@ -542,6 +542,7 @@ void gerarParceria(disciplina vetorD[], aluno vetorA[], int tam)
 
     for(int i=0; i<141; i++)
     {
+        cout<<vetorA[i].nome<<endl;
         for(int j=0; j<10; j++)
         {
             //cout<<vetorA[i].facilidade[j];
@@ -549,6 +550,8 @@ void gerarParceria(disciplina vetorD[], aluno vetorA[], int tam)
 
 
                 if(vetorD[k].rankFacilidade!=0 && vetorD[k].rankDificuldade!=0){
+                        cout<<"chegou: "<<vetorD[k].nome<<endl;
+
 
 
                     if(vetorA[i].facilidade[j]==vetorD[k].nome){
@@ -557,8 +560,12 @@ void gerarParceria(disciplina vetorD[], aluno vetorA[], int tam)
                         for(int l=0; l<vetorD[k].rankDificuldade; l++){
 
 
+                            Celula* c = new Celula;
+                            c=vetorD[k].listaDif.pesquisarIndice(l);
+                            cout<<c->novo.nome<<endl;
 
-                            vetorA[i].indicado->inserirAoFinal(vetorD[k].listaDif.pesquisarIndice(l));
+
+                            vetorA[i].indicado->inserirAoFinal(c);
 
 
 
@@ -587,7 +594,7 @@ int main()
     //ofstream gravar;
     // gravar.open("test.txt");
 
-    shellSortNum(vetorD,tam,3);
+    //shellSortNum(vetorD,tam,3);
 
     /* for(int i=0; i<tam; i++)
      {
@@ -603,12 +610,19 @@ int main()
 
 
      }*/
+
+     for(int i=0; i<tam; i++)
+    {
+        cout<<"\n"<<vetorD[i].nome<<": "<<endl;
+        cout<<"\nF: ";
+        vetorD[i].listaFac.imprimir();
+        cout<<"\nD: ";
+        vetorD[i].listaDif.imprimir();
+
+    }
     gerarParceria(vetorD,vetor,tam);
 
-    for(int i=0; i<141; i++)
-    {
-        //cout<<vetor[i].nome <<": "<<vetor[i].quantIndic<<endl;
-    }
+
 
 
 
