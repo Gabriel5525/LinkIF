@@ -13,6 +13,9 @@
 
 using namespace std;
 
+
+struct Lista;
+
 struct aluno
 {
     int codigo;
@@ -22,6 +25,10 @@ struct aluno
     string email;
     string facilidade[10];
     string dificuldade[10];
+    int quantIndic=0;
+    Lista* indicado;
+    string materiaIndica;
+
 };
 
 struct Celula
@@ -66,17 +73,48 @@ struct Lista
         }
     }
 
-};
+    Celula* pesquisar(aluno v)
+    {
+        if(vazia())
+            return NULL;
+        else
+        {
+            Celula* aux = primeiro;
+            while(aux != NULL && aux->novo.codigo != v.codigo)
+            {
+                aux = aux->prox;
+            }
+            return aux;
+        }
+    }
 
+    Celula* pesquisarIndice(int v)
+    {
+        if(vazia())
+            return NULL;
+        else
+        {
+            Celula* aux = primeiro;
+            int cont=0;
+            while(aux != NULL && cont != v)
+            {
+                aux = aux->prox;
+                cont++;
+            }
+            return aux;
+        }
+    }
+};
 
 struct disciplina
 {
     int codigo;
     string nome;
     int rankFacilidade=0;
-    Lista listaFac ;
+    Lista listaFac;
     int rankDificuldade=0;
-    Lista listaDif ;
+    Lista listaDif;
+    double proporcao=0.0;
 
 };
 
@@ -119,7 +157,6 @@ void insereListaDisciplina(disciplina lista[], aluno novo, int tam, int id)
     }
 
 }
-
 
 bool verifica(disciplina vetor[], string nome, int tam, int id)
 {
@@ -386,7 +423,7 @@ void shellSortNum(disciplina vetor[], int tam, int id)
             i = i / 2;
         }
     }
-    else  //rank dificuldades
+    else if(id==2) //rank dificuldades
     {
 
         while(i != 0)
@@ -397,6 +434,31 @@ void shellSortNum(disciplina vetor[], int tam, int id)
                 for(k = 0; k < tam - i; ++k)
                 {
                     if(vetor[k].rankDificuldade> vetor[k+i].rankDificuldade)
+                    {
+                        aux = vetor[k];
+                        vetor[k] = vetor[k+i];
+                        vetor[k+i] = aux;
+                        chave = 0;
+                    }
+                }
+            }
+            while(chave == 0);
+            i = i / 2;
+        }
+
+
+    }
+    else //rank proporção
+    {
+
+        while(i != 0)
+        {
+            do
+            {
+                chave = 1;
+                for(k = 0; k < tam - i; ++k)
+                {
+                    if(vetor[k].proporcao> vetor[k+i].proporcao)
                     {
                         aux = vetor[k];
                         vetor[k] = vetor[k+i];
@@ -424,6 +486,7 @@ void gravarDiscFaci(disciplina vetor[], int tam)
         if(vetor[i].nome.size()>3 && vetor[i].rankFacilidade!=0)
         {
             gravar<<vetor[i].nome<<" : "<<vetor[i].rankFacilidade<<"\n";
+            vetor[i].proporcao=vetor[i].rankDificuldade/vetor[i].rankFacilidade;
         }
     }
     gravar.close();
@@ -446,6 +509,20 @@ void gravarDiscDif(disciplina vetor[], int tam)
     gravar.close();
 }
 
+void incrementaIndic(aluno vetor[], int tam, int id,string nome)
+{
+
+    for(int i=0;i<tam;i++){
+        if(vetor[i].codigo==id){
+            vetor[i].quantIndic++;
+            vetor[i].materiaIndica=nome;
+           /* Celula* c= new Celula();
+            c->novo=indica;
+            vetor[i].indicado->inserirAoFinal(c);*/
+        }
+    }
+}
+
 void gravarRank(disciplina vetorD[], int tam)
 {
     shellSortNum(vetorD,tam,1);
@@ -453,6 +530,57 @@ void gravarRank(disciplina vetorD[], int tam)
 
     shellSortNum(vetorD,tam,2);
     gravarDiscDif(vetorD,tam);
+}
+
+
+
+void gerarParceria(disciplina vetorD[], aluno vetorA[], int tam)
+{
+
+    int cont=0, k=0, aux;
+
+    for(int i=tam-1; i>=0; i--)
+    {
+
+        if(vetorD[i].rankFacilidade==0 || vetorD[i].rankDificuldade==0){
+
+        }
+        else{
+            cout<<"\n--"<<vetorD[i].nome<<"--\n"<<endl;
+        for(int j=0;j<vetorD[i].rankFacilidade;j++){
+
+
+
+            cout<<"\nAluno: "<<vetorD[i].listaFac.pesquisarIndice(j)->novo.nome<<" : ";
+
+                incrementaIndic(vetorA,141,vetorD[i].listaFac.pesquisarIndice(j)->novo.codigo,vetorD[i].nome);
+                aux=vetorA[vetorD[i].listaFac.pesquisarIndice(j)->novo.codigo-1].quantIndic;
+               // cout<<aux<<" -- "<<vetorA[i].materiaIndica<<endl;
+                cout<<aux<<"\n"<<endl;
+
+            k=cont;
+
+            while(cont<vetorD[i].proporcao+k && cont!=vetorD[i].rankDificuldade){
+
+
+                if(aux<3){
+
+                    //incrementaIndic(vetorA,141,vetorD[i].listaFac.pesquisarIndice(j)->novo.codigo/*,vetorD[i].listaDif.pesquisarIndice(k)->novo*/);
+                    cout<<"Indicados: "<<vetorD[i].listaDif.pesquisarIndice(cont)->novo.nome<<endl;
+                        cont++;
+
+                    }
+                    else{
+                        break;
+                    }
+
+                }
+            }
+            cont=0;
+        }
+    }
+
+
 }
 
 int main()
@@ -467,9 +595,15 @@ int main()
     tam=leArquivo(vetorD,vetor);
     gravarRank(vetorD,tam);
 
-    for(int i=0;i<tam;i++){
+   //ofstream gravar;
+   // gravar.open("test.txt");
+
+    shellSortNum(vetorD,tam,3);
+
+   /* for(int i=0; i<tam; i++)
+    {
         cout<<endl;
-        cout<<vetorD[i].nome<<":"<<endl;
+        cout<<vetorD[i].nome<<":"<< vetorD[i].proporcao<<endl;
         cout<<"\nFacilidade:"<<endl;
         cout<<"___________________"<<endl;
         vetorD[i].listaFac.imprimir();
@@ -477,6 +611,13 @@ int main()
         cout<<"\nDificuldade:"<<endl;
         cout<<"___________________"<<endl;
         vetorD[i].listaDif.imprimir();
+
+
+    }*/
+    gerarParceria(vetorD,vetor,tam);
+
+    for(int i=0;i<141;i++){
+        //cout<<vetor[i].nome <<": "<<vetor[i].quantIndic<<endl;
     }
 
 
