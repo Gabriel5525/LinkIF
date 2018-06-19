@@ -9,131 +9,32 @@
 #include <cstddef>
 #include <time.h>
 #include <algorithm>
-
+#include "Aluno.h"
+#include "Lista.h"
+#include "Celula.h"
+#include "Disciplina.h"
+#include <vector>
 
 using namespace std;
 
 
-struct Lista;
 
-struct aluno
-{
-    int codigo;
-    string nome;
-    int ano;
-    string curso;
-    string email;
-    string facilidade[10];
-    string dificuldade[10];
-    int quantIndic=0;
-    Lista* indicado;
-    Lista* ajuda;
-
-
-};
-
-struct Celula
-{
-    aluno novo;
-    Celula *prox;
-};
-
-struct Lista
-{
-    Celula* primeiro;
-
-    bool vazia()
-    {
-        return (primeiro == NULL);
-    }
-
-    void inserirAoFinal(Celula* c)
-    {
-        if(vazia())
-        {
-            primeiro = c;
-        }
-        else
-        {
-            Celula* aux = primeiro;
-            while(aux->prox != NULL)
-            {
-                aux = aux->prox;
-            }
-            aux->prox = c;
-        }
-    }
-
-    void imprimir()
-    {
-        Celula* aux = primeiro;
-        while(aux != NULL)
-        {
-            cout<<aux->novo.nome<<endl;
-            aux = aux->prox;
-        }
-    }
-
-    Celula* pesquisar(aluno v)
-    {
-        if(vazia())
-            return NULL;
-        else
-        {
-            Celula* aux = primeiro;
-            while(aux != NULL && aux->novo.codigo != v.codigo)
-            {
-                aux = aux->prox;
-            }
-            return aux;
-        }
-    }
-
-    Celula* pesquisarIndice(int v)
-    {
-        if(vazia())
-            return NULL;
-        else
-        {
-            Celula* aux = primeiro;
-            int cont=0;
-            while(aux != NULL && cont != v)
-            {
-                aux = aux->prox;
-                cont++;
-            }
-            return aux;
-        }
-    }
-
-};
-
-struct disciplina
-{
-    int codigo;
-    string nome;
-    int rankFacilidade=0;
-    Lista listaFac;
-    int rankDificuldade=0;
-    Lista listaDif;
-    double proporcao=0.0;
-
-};
-
-void insereListaDisciplina(disciplina lista[], aluno novo, int tam, int id)
+void insereListaDisciplina(Disciplina vetorDisc[], Aluno novo,int cont, int tam, int id)
 {
 
     if(id==1)
     {
-        for(int i=0; i<10; i++)
+
+        for(int i=0; i<cont; i++)
         {
             for(int j=0; j<tam; j++)
             {
-                if(novo.facilidade[i]==lista[j].nome)
+                if(novo.facilidade[i]==vetorDisc[j].nome)
                 {
                     Celula* c= new Celula();
-                    c->novo=novo;
-                    lista[j].listaFac.inserirAoFinal(c);
+                    c->id=novo.id;
+                    c->nome=novo.nome;
+                    vetorDisc[j].idAlunosFac.inserirAoFinal(c);
 
                     break;
                 }
@@ -142,145 +43,148 @@ void insereListaDisciplina(disciplina lista[], aluno novo, int tam, int id)
     }
     else
     {
-        for(int i=0; i<10; i++)
+        for(int i=0; i<cont; i++)
         {
             for(int j=0; j<tam; j++)
             {
-                if(novo.dificuldade[i]==lista[j].nome)
+                if(novo.dificuldade[i]==vetorDisc[j].nome)
                 {
                     Celula* c= new Celula();
-                    c->novo=novo;
-                    lista[j].listaDif.inserirAoFinal(c);
+                    c->id=novo.id;
+                    c->nome=novo.nome;
+                    vetorDisc[j].idAlunosDif.inserirAoFinal(c);
 
                     break;
                 }
             }
         }
     }
-
 }
 
-bool verifica(disciplina vetor[], string nome, int tam, int id)
+bool verificaDisiciplina(Disciplina vetorDisc[], string nome, int tam, int id)
 {
+
     for(int i=0; i<tam; i++)
     {
-        if(nome==vetor[i].nome)
+        if(nome==vetorDisc[i].nome)
         {
 
-            if(id==1)
+            if(id==1)//facilidade
             {
-                vetor[i].rankFacilidade++;
+                vetorDisc[i].totalFac++;
             }
-            else
+            else//dificuldade
             {
-                vetor[i].rankDificuldade++;
+                vetorDisc[i].totalDif++;
             }
             return false;
         }
     }
 
-    if(id==1)
+    Disciplina* nova = new Disciplina();
+
+    if(id==1)//facilidade
     {
-        vetor[tam].rankFacilidade=1;
+        nova->totalFac=1;
     }
-    else
+    else//dificuldade
     {
-        vetor[tam].rankDificuldade=1;
+        nova->totalDif=1;
     }
+    vetorDisc[tam]=*nova;
+
     return true;
 }
 
-int leFacilidades(disciplina discip[],aluno vetor[], int tam)
+void leFacilidades(Disciplina vetorDisc[],Aluno vetorAlunos[], int &contDisc)
 {
     string linha, materia;
-    int j=0;
+    int contAlunos=0;
     ifstream reader;
 
     reader.open("facilidades2.txt");
 
     while(!reader.eof())
     {
-        int i=0, k=0, aux=0;
+        int contLinha=0, contFaci=0, aux=0;
         materia="";
         getline(reader,linha,'\n');
 
-
         while(aux<linha.size())
         {
-            while (linha[i]!=',')
+            while (linha[contLinha]!=',')
             {
-                materia+=linha[i];
-                i++;
+                materia+=linha[contLinha];
+                contLinha++;
                 aux++;
             }
-            if(verifica(discip,materia,tam,1))
+
+            if(verificaDisiciplina(vetorDisc,materia,contDisc,1))//se for true ele grava o nome e id da disciplina uma vez
             {
-                discip[tam].nome=materia;
-                discip[tam].codigo=tam;
+                vetorDisc[contDisc].nome=materia;
+                vetorDisc[contDisc].id=contDisc;
 
-                tam++;
+                contDisc++;
             }
+            vetorAlunos[contAlunos].facilidade[contFaci]=materia;
 
-            vetor[j].facilidade[k]=materia;
             materia="";
-
-            k++;
-            i++;
+            contFaci++;
+            contLinha++;
             aux++;
         }
-        insereListaDisciplina(discip,vetor[j],tam,1);
-        j++;
+        vetorAlunos[contAlunos].quantFac=contFaci;
+        insereListaDisciplina(vetorDisc,vetorAlunos[contAlunos],contFaci,contDisc,1);
+        contAlunos++;
     }
     reader.close();
-    return tam;
 }
 
-int leDificuldades(disciplina discip[], aluno vetor[], int tam)
+int leDificuldades(Disciplina vetorDisc[], Aluno vetorAlunos[], int &contDisc)
 {
 
     string linha, materia;
-    int j=0;
+    int contAlunos=0;
     ifstream reader;
 
     reader.open("dificuldades2.txt");
 
     while(!reader.eof())
     {
-        int i=0, k=0, aux=0;
+        int contLinha=0, contDif=0, aux=0;
         materia="";
         getline(reader,linha,'\n');
 
         while(aux<linha.size())
         {
-            while (linha[i]!=',')
+            while (linha[contLinha]!=',')
             {
-                materia+=linha[i];
-                i++;
+                materia+=linha[contLinha];
+                contLinha++;
                 aux++;
             }
-            if(verifica(discip,materia,tam,2))
+            if(verificaDisiciplina(vetorDisc,materia,contDisc,2))//se for true ele grava o nome e id da disciplina uma vez
             {
-                discip[tam].nome=materia;
-                discip[tam].codigo=tam;
-                tam++;
+                vetorDisc[contDisc].nome=materia;
+                vetorDisc[contDisc].id=contDisc;
+
+                contDisc++;
             }
+            vetorAlunos[contAlunos].dificuldade[contDif]=materia;
 
-            vetor[j].dificuldade[k]=materia;
             materia="";
-
-            k++;
-            i++;
+            contDif++;
+            contLinha++;
             aux++;
         }
-        insereListaDisciplina(discip,vetor[j],tam,2);
-        j++;
+        vetorAlunos[contAlunos].quantDif=contDif;
+        insereListaDisciplina(vetorDisc,vetorAlunos[contAlunos],contDif,contDisc,2);
+        contAlunos++;
     }
-
     reader.close();
-    return tam;
 }
 
-int leArquivo(disciplina discip[], aluno vetor[])
+void leArquivo(Disciplina vetorDisc[], Aluno vetorAlunos[],int &contAlunos, int &contDisc)
 {
     ifstream reader;
     reader.open("linkIF.txt");
@@ -292,290 +196,116 @@ int leArquivo(disciplina discip[], aluno vetor[])
     }
     else
     {
-        aluno alguem;
-        string codigo, nome, ano, curso, email, facilidade[9], dificuldade[9];
-        int tam=0;
+        Aluno* alguem = new Aluno();
+        string codigo, nome, ano, curso, email;
 
         while(!reader.eof())
         {
             getline(reader,codigo,';');
             codigo.erase(remove(codigo.begin(), codigo.end(), ' '), codigo.end());
-            alguem.codigo=atoi(codigo.c_str());
+            alguem->id=atoi(codigo.c_str());
 
             getline(reader,nome,';');
-            alguem.nome=nome;
+            alguem->nome=nome;
 
             getline(reader,ano,';');
             ano.erase(remove(ano.begin(), ano.end(), ' '), ano.end());
-            alguem.ano=atoi(ano.c_str());
+            alguem->ano=atoi(ano.c_str());
 
             getline(reader,curso,';');
-            alguem.curso=curso;
+            alguem->curso=curso;
 
             getline(reader,email,';');
             email.erase(remove(email.begin(), email.end(), ' '), email.end());
-            alguem.email=email;
+            alguem->email=email;
 
-            vetor[tam]=alguem;
+            vetorAlunos[contAlunos]=*alguem;
 
-            tam++;
+            contAlunos++;
+
         }
-        int tam2;
+
         reader.close();
-        tam2=leFacilidades(discip,vetor,0);
-        tam2=leDificuldades(discip,vetor,tam2);
+        contAlunos--;
 
-        return tam2;
+        leFacilidades(vetorDisc,vetorAlunos,contDisc);
+        leDificuldades(vetorDisc,vetorAlunos,contDisc);
+
+        contDisc--;
+
     }
 }
 
-void imprimirFacilidade(aluno vetor[], int tam, int i)
+void imprimirFacilidade(Aluno vetorAlunos[], int posicaoVetor)
 {
     for(int j=0; j<10; j++)
     {
-        if(vetor[i].facilidade[j].size()>4)
-        {
-            cout<<"Facilidade "<<j+1<<": "<<vetor[i].facilidade[j]<<endl;
-        }
+        cout<<"Facilidade "<<j+1<<": "<<vetorAlunos[posicaoVetor].facilidade[j]<<endl;
     }
 }
 
-void imprimirDificuldade(aluno vetor[], int tam, int i)
+void imprimirDificuldade(Aluno vetorAlunos[], int posicaoVetor)
 {
     for(int j=0; j<10; j++)
     {
-        if(vetor[i].facilidade[j].size()>4)
-        {
-            cout<<"Dificuldade "<<j+1<<": "<<vetor[i].dificuldade[j]<<endl;
-        }
+        cout<<"Dificuldade "<<j+1<<": "<<vetorAlunos[posicaoVetor].dificuldade[j]<<endl;
     }
 }
 
-void imprimir(aluno vetor[], int tam)
+void imprimir(Aluno vetorAlunos[], int tam)
 {
     for(int i=0; i<tam; i++)
     {
-        cout<<"Codigo : "<<vetor[i].codigo<<endl;
-        cout<<"Nome : "<<vetor[i].nome<<endl;
-        cout<<"Ano : "<<vetor[i].ano<<endl;
-        cout<<"Curso : "<<vetor[i].curso<<endl;
-        cout<<"E-mail : "<<vetor[i].email<<endl;
+        cout<<"Codigo : "<<vetorAlunos[i].id<<endl;
+        cout<<"Nome : "<<vetorAlunos[i].nome<<endl;
+        cout<<"Ano : "<<vetorAlunos[i].ano<<endl;
+        cout<<"Curso : "<<vetorAlunos[i].curso<<endl;
+        cout<<"E-mail : "<<vetorAlunos[i].email<<endl;
         cout<<"_______________________"<<endl;
-        imprimirFacilidade(vetor,tam,i);
+        imprimirFacilidade(vetorAlunos,i);
         cout<<"_______________________"<<endl;
-        imprimirDificuldade(vetor,tam,i);
+        imprimirDificuldade(vetorAlunos,i);
         cout<<endl;
     }
 }
 
-void shellSortString(string materias[], int tam)
+void gerarParceria(Disciplina vetorDisc[], Aluno vetorAlunos[], int tamAlunos, int tamDisc)
 {
 
-    int i = (tam- 1) / 2;
-    int chave, k;
-    string aux;
-
-    while(i != 0)
+    for(int i=0; i<tamAlunos; i++)
     {
-        do
+        for(int j=0; j<vetorAlunos[i].quantFac; j++)
         {
-            chave = 1;
-            for(k = 0; k < tam - i; ++k)
+            for(int k=0; k<tamDisc; k++)
             {
-                if(materias[k]> materias[k+i])
+                if(vetorDisc[k].totalDif!=0 && vetorDisc[k].totalFac!=0 && vetorAlunos[i].facilidade[j]==vetorDisc[k].nome)
                 {
-                    aux = materias[k];
-                    materias[k] = materias[k+i];
-                    materias[k+i] = aux;
-                    chave = 0;
-                }
-            }
-        }
-        while(chave == 0);
-        i = i / 2;
-    }
-}
-
-void shellSortNum(disciplina vetor[], int tam, int id)
-{
-
-    int i = (tam- 1) / 2;
-    int chave, k;
-    disciplina aux;
-
-    if(id==1)  //rank de facilidades
-    {
-        while(i != 0)
-        {
-            do
-            {
-                chave = 1;
-                for(k = 0; k < tam - i; ++k)
-                {
-                    if(vetor[k].rankFacilidade> vetor[k+i].rankFacilidade)
+                    for(int indice=0; indice<vetorDisc[k].totalDif; indice++)
                     {
-                        aux = vetor[k];
-                        vetor[k] = vetor[k+i];
-                        vetor[k+i] = aux;
-                        chave = 0;
+                        //cout<<"chegou "<<vetorDisc[k].idAlunosDif.pesquisarIndice(indice)<<" : "<<vetorDisc[k].nome<<endl;
+                        Celula* c= new Celula();
+                        c->id=vetorDisc[k].idAlunosDif.pesquisarIndice(indice);
+                        c->nome=vetorDisc[k].nome;
+                        vetorAlunos[i].indicadoPara.inserirAoFinal(c);
+                        vetorAlunos[i].quantIndic++;
+
                     }
                 }
             }
-            while(chave == 0);
-            i = i / 2;
         }
     }
-    else if(id==2) //rank dificuldades
-    {
-
-        while(i != 0)
-        {
-            do
-            {
-                chave = 1;
-                for(k = 0; k < tam - i; ++k)
-                {
-                    if(vetor[k].rankDificuldade> vetor[k+i].rankDificuldade)
-                    {
-                        aux = vetor[k];
-                        vetor[k] = vetor[k+i];
-                        vetor[k+i] = aux;
-                        chave = 0;
-                    }
-                }
-            }
-            while(chave == 0);
-            i = i / 2;
-        }
-
-
-    }
-    else //rank proporção
-    {
-
-        while(i != 0)
-        {
-            do
-            {
-                chave = 1;
-                for(k = 0; k < tam - i; ++k)
-                {
-                    if(vetor[k].proporcao> vetor[k+i].proporcao)
-                    {
-                        aux = vetor[k];
-                        vetor[k] = vetor[k+i];
-                        vetor[k+i] = aux;
-                        chave = 0;
-                    }
-                }
-            }
-            while(chave == 0);
-            i = i / 2;
-        }
-
-
-    }
-}
-
-void gravarDiscFaci(disciplina vetor[], int tam)
-{
-
-    ofstream gravar;
-    gravar.open("RankFacilidades.txt");
-
-    for(int i=tam-1; i>=0; i--)
-    {
-        if(vetor[i].nome.size()>3 && vetor[i].rankFacilidade!=0)
-        {
-            gravar<<vetor[i].nome<<" : "<<vetor[i].rankFacilidade<<"\n";
-            vetor[i].proporcao=vetor[i].rankDificuldade/vetor[i].rankFacilidade;
-        }
-    }
-    gravar.close();
 
 }
 
-void gravarDiscDif(disciplina vetor[], int tam)
-{
-
-    ofstream gravar;
-    gravar.open("RankDificuldades.txt");
-
-    for(int i=tam-1; i>=0; i--)
-    {
-        if(vetor[i].nome.size()>3  && vetor[i].rankDificuldade!=0)
-        {
-            gravar<<vetor[i].nome<<" : "<<vetor[i].rankDificuldade<<"\n";
-        }
-    }
-    gravar.close();
-}
-
-void incrementaIndic(aluno vetor[], int tam, int id,string nome)
+string getNomeAluno(Aluno vetorAlunos[],int tam, int id)
 {
 
     for(int i=0; i<tam; i++)
     {
-        if(vetor[i].codigo==id)
+        if(vetorAlunos[i].id==id)
         {
-            //vetor[i].quantIndic++;
-            //vetor[i].materiaIndica=nome;
-/*            Celula* c= new Celula();
-            c->novo=indica;
-            vetor[i].indicado->inserirAoFinal(c);
-            */
+            return vetorAlunos[i].nome;
         }
-    }
-}
-
-void gravarRank(disciplina vetorD[], int tam)
-{
-    shellSortNum(vetorD,tam,1);
-    gravarDiscFaci(vetorD,tam);
-
-    shellSortNum(vetorD,tam,2);
-    gravarDiscDif(vetorD,tam);
-}
-
-void gerarParceria(disciplina vetorD[], aluno vetorA[], int tam)
-{
-
-    for(int i=0; i<141; i++)
-    {
-        cout<<vetorA[i].nome<<endl;
-        for(int j=0; j<10; j++)
-        {
-            //cout<<vetorA[i].facilidade[j];
-            for(int k=0;k<tam;k++){
-
-
-                if(vetorD[k].rankFacilidade!=0 && vetorD[k].rankDificuldade!=0){
-                        cout<<"chegou: "<<vetorD[k].nome<<endl;
-
-
-
-                    if(vetorA[i].facilidade[j]==vetorD[k].nome){
-
-
-                        for(int l=0; l<vetorD[k].rankDificuldade; l++){
-
-
-                            Celula* c = new Celula;
-                            c=vetorD[k].listaDif.pesquisarIndice(l);
-                            cout<<c->novo.nome<<endl;
-
-
-                            vetorA[i].indicado->inserirAoFinal(c);
-
-
-
-                        }
-                    }
-                }
-            }
-            //vetorA[i].indicado->imprimir();
-        }
-
     }
 }
 
@@ -583,50 +313,36 @@ int main()
 {
     setlocale(LC_ALL,"Portuguese");
 
-    aluno vetor[150];
-    int tam, cont=0;
-    disciplina vetorD[100];
+    int contDisc=0, contAlunos=0;
 
+    Disciplina vetorDisc[100];
+    Aluno vetorAlunos[138];
 
-    tam=leArquivo(vetorD,vetor);
-    gravarRank(vetorD,tam);
+    ofstream gravar;
+    gravar.open("Parceiros.txt");
 
-    //ofstream gravar;
-    // gravar.open("test.txt");
+    leArquivo(vetorDisc,vetorAlunos,contAlunos,contDisc);
 
-    //shellSortNum(vetorD,tam,3);
+    gerarParceria(vetorDisc,vetorAlunos,contAlunos,contDisc);
 
-    /* for(int i=0; i<tam; i++)
-     {
-         cout<<endl;
-         cout<<vetorD[i].nome<<":"<< vetorD[i].proporcao<<endl;
-         cout<<"\nFacilidade:"<<endl;
-         cout<<"___________________"<<endl;
-         vetorD[i].listaFac.imprimir();
-         cout<<"___________________"<<endl;
-         cout<<"\nDificuldade:"<<endl;
-         cout<<"___________________"<<endl;
-         vetorD[i].listaDif.imprimir();
-
-
-     }*/
-
-     for(int i=0; i<tam; i++)
+    for(int i=0; i<contAlunos; i++)
     {
-        cout<<"\n"<<vetorD[i].nome<<": "<<endl;
-        cout<<"\nF: ";
-        vetorD[i].listaFac.imprimir();
-        cout<<"\nD: ";
-        vetorD[i].listaDif.imprimir();
+        int cont=0;
+        gravar<<"\nAluno:"<<vetorAlunos[i].nome;
+        gravar<<"\nIndicado Para:\n\n";
+
+        for(int j=0; j<vetorAlunos[i].quantIndic; j++)
+        {
+            gravar<<vetorAlunos[i].indicadoPara.pesquisarIndiceString(j)<<" :"<<getNomeAluno(vetorAlunos,contAlunos,vetorAlunos[i].indicadoPara.pesquisarIndice(j))<<"\n";
+        }
 
     }
-    gerarParceria(vetorD,vetor,tam);
 
 
 
 
 
-    //imprimir(vetor,141);
+
 
 
     return 0;

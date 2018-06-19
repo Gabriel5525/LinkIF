@@ -1,0 +1,48 @@
+# depslib dependency file v1.0
+1529441822 source:c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\src\aluno.cpp
+	"Aluno.h"
+
+1529441822 c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\include\aluno.h
+	<string>
+	"Lista.h"
+
+1529437448 source:c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<windows.h>
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<iomanip>
+	<cstddef>
+	<time.h>
+	<algorithm>
+	"Aluno.h"
+	"Lista.h"
+	"Celula.h"
+	"Disciplina.h"
+	<vector>
+
+1529437626 c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\include\lista.h
+	"Celula.h"
+	<string>
+
+1529437145 c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\include\celula.h
+	<string>
+
+1529156680 c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\include\disciplina.h
+	"Lista.h"
+	<string>
+
+1529435729 source:c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\src\celula.cpp
+	"Celula.h"
+
+1529328096 source:c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\src\disciplina.cpp
+	"Disciplina.h"
+
+1529437605 source:c:\users\gabri\onedrive\햞ea de trabalho\linkifclass\src\lista.cpp
+	"Lista.h"
+	<iostream>
+	<string>
+
