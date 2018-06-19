@@ -1,22 +1,22 @@
-História : 72
-Biologia : 48
+História : 69
+Biologia : 45
 Língua Portuguesa/Literatura : 42
-Dançar : 39
+Dançar : 36
 Artes : 34
-Futebol : 33
+Futebol : 32
 Inglês : 32
 Culinária : 29
 Eletrônica Digital I : 28
 Algoritmos e Lógicas de Programação I : 28
-Informática Básica : 28
+Informática Básica : 26
 Vôlei : 25
-Matemática Financeira : 25
-Quimica : 24
+Matemática Financeira : 23
+Quimica : 22
 Noções de Direito : 22
 Geografia : 21
 Matemática : 21
-Confeitaria : 20
 Introdução à Administração : 20
+Confeitaria : 18
 Sociologia/Filosofia : 18
 Desenho Técnico : 16
 Desenho : 15

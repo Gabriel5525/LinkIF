@@ -1,42 +1,42 @@
-Física : 114
-Matemática : 111
-Tocar Violão : 59
+Física : 110
+Matemática : 106
+Tocar Violão : 55
 Quimica : 41
-Algoritmos e Lógicas de Programação I : 34
+Algoritmos e Lógicas de Programação I : 32
 Eletrônica Analógica I : 27
-Desenho : 25
-Tocar Teclado/Piano : 23
-Geografia : 22
+Desenho : 23
 Arco e Flecha : 22
-Inglês : 21
+Geografia : 21
+Tocar Teclado/Piano : 21
+Inglês : 20
 Cantar : 19
-Vôlei : 19
 Skate : 18
-Futebol : 16
+Vôlei : 17
+Futebol : 15
 Culinária : 15
-Noções de Direito : 15
 Artes Marciais  - Muay Thai : 14
-Sociologia/Filosofia : 13
-Eletrônica Básica : 13
+Noções de Direito : 13
+Eletrônica Básica : 12
 Matemática Financeira : 12
 História : 11
-Introdução à Administração : 10
+Sociologia/Filosofia : 11
 Artes Marciais - Jiu Jitsu : 9
-Basquete : 9
 Biologia : 9
+Basquete : 9
 Tocar Bateria : 9
-Patins : 8
 Operações Financeiras : 8
+Introdução à Administração : 8
 Tocar Violino : 8
+Patins : 7
+Informática Básica : 6
 Artes Marciais - Karatê : 6
 Confeitaria : 6
-Informática Básica : 6
-Algoritmos e Lógicas de Programação II : 6
-Economia : 6
 Tocar Contra-Baixo : 6
+Economia : 6
 Língua Portuguesa/Literatura : 6
-Corrida : 5
 Direito Aplicado à Administração : 5
+Corrida : 5
+Algoritmos e Lógicas de Programação II : 5
 Artes Marciais - Kung Fu : 5
 Eletrônica Analógica II : 5
 HandBol : 5
@@ -49,16 +49,16 @@ Administração Mercadológica : 3
 Boomerang : 3
 Empreendedorismo : 3
 Eletrônica Digital I : 3
-Sistemas Operacionais : 2
 Fundamentos de Informática : 2
-Segurança do Trabalho : 2
 Artes : 2
-Desenvolvimento web : 2
+Segurança do Trabalho : 2
 Redes de Computadores : 2
-Eletrônica Digital II : 2
+Desenvolvimento web : 2
 Rotinas Administrativas : 2
+Eletrônica Digital II : 2
 Microcontroladores : 2
 Artes Marciais - Kick Boxing : 2
 Desenho Técnico : 1
+Sistemas Operacionais : 1
 Automação e Controle de Processo : 1
 Eletrônica das Cominucações : 1
